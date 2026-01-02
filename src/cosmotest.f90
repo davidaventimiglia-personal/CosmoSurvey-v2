@@ -11,6 +11,7 @@ program main
   real(kind=plflt) :: w, Omega_Lambda_0, Omega_M_0, sigma_8, tau_0, lambda_0, alpha, beta, sig_tau
   real(kind=plflt) :: sig_lambda, phi, psi, rho, chi, gamma
   integer :: Nz, Nl
+  integer :: plparseopts_rc
 
   call kracken ('cmd', '-w -1.0 -om 0.30 -s8 0.9 -g 0.55 -h .false.')
   if (lget('cmd_h')) then
@@ -38,7 +39,7 @@ program main
      theta_G%Omega_M_0 = rget('cmd_om')
      theta_G%sigma_8 = rget('cmd_s8')
      theta_G%gamma = rget('cmd_g')
-     call plparseopts(128)
+     plparseopts_rc = plparseopts(PL_PARSE_FULL)
      call plinit()
      call plfontld(1)
      call plot1()

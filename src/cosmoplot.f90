@@ -11,8 +11,9 @@ program main
   real(kind=plflt) :: w, Omega_Lambda_0, Omega_M_0, sigma_8, tau_0, lambda_0, alpha, beta, sig_tau
   real(kind=plflt) :: sig_lambda, phi, psi, rho, chi, gamma
   character(len=255) :: cmd
+  integer :: plparseopts_rc
 
-  call plparseopts(128)
+  plparseopts_rc = plparseopts(PL_PARSE_FULL)
 
   cmd = &
        &' -h .false. -z1 0.01 -z2 2.5 -nz 5 -l1 44.0 -l2 46.0 -nl 5 '//&
