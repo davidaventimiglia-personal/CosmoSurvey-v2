@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.59])
-AC_INIT([cosmosurvey], [1.0], [dventimi@gmail.com])
+AC_INIT([cosmosurvey], [2.0.0], [dventimi@gmail.com])
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([src/cosmology.f90])
 AC_LANG([Fortran])
