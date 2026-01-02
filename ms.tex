@@ -1,0 +1,1059 @@
+\def\top{\emph{Top}}
+\def\bottom{\emph{Bottom}}
+\def\lft{\emph{Left}}
+\def\rgt{\emph{Right}}
+\def\xmas2{X-MAS}
+\def\xspec{XSPEC}
+\def\mtx{$M$-$T_{\rm X}$} 
+\def\mlx{$M$-$L_{\rm X}$}
+\def\thbr{$T_{\rm HBR}$} 
+\def\tbroad{$T_{\rm 0.7-7}$} 
+\def\thard{$T_{\rm 2.0-7}$}
+\def\tx{T_{\rm X}} 
+\def\tew{T_{\rm EW}} 
+\def\tsl{T_{\rm SL}}
+\def\ix{i_{\rm X}} 
+\def\Rap{R_{\rm ap}} 
+\def\ColorRef{[\emph{See the
+    electronic edition of the Journal for a color version of this
+    figure.}]}
+\def\chandra{\emph{Chandra}}
+\def\enzo{\emph{Enzo}}
+
+% \documentclass{emulateapj}
+% \documentclass[onecolumn]{emulateapj}
+\documentclass[12pt,preprint]{aastex}
+% \documentclass{aastex} \usepackage{natbib}
+\bibliographystyle{apj}%Choose a bibliograhpic style
+\begin{document}
+\title{Temperature Structure and Mass-Temperature Scatter In
+  Galaxy Clusters}
+
+\author{
+  David A. Ventimiglia\altaffilmark{1},
+  G. Mark Voit\altaffilmark{1},
+  E. Rasia\altaffilmark{2,3}
+}
+
+\slugcomment{Revision:  1.37}
+
+\altaffiltext{1}{Michigan State University, Physics \& Astronomy
+  Dept., East Lansing, MI 48824-2320; ventimig@msu.edu,
+  voit@pa.msu.edu}
+\altaffiltext{2}{Dept. of Astronomy, University of Michigan, Ann
+  Arbor, MI 48109, USA}
+\altaffiltext{3}{Chandra Fellow}
+
+\begin{abstract}
+  Precision cosmology studies based on wide-field surveys of galaxy
+  clusters benefit from constraints on intrinsic scatter in
+  mass-observable relationships.  In principle, two-parameter models
+  combining direct measurements of galaxy cluster structural variation
+  with mass proxies such as X-ray luminosity and temperature can be
+  used to constrain scatter in the relationship between the mass proxy
+  and the cluster's halo mass and to measure the redshift evolution of
+  that scatter.  One candidate for quantifying cluster substructure is
+  the ICM temperature inhomogeneity inferred from X-ray spectral
+  properties, an example of which is \thbr, the ratio of hardband to
+  broadband spectral fit temperatures.  In this paper we test the
+  effectiveness of \thbr\ as an indicator of scatter in the
+  mass-temperature relation using 118 galaxy clusters simulated with
+  radiative cooling and feedback.  We find that, while \thbr\ is
+  correlated with clusters' departures $\delta \ln T_X$ from the mean
+  \mtx\ relation, the effect is modest.
+\end{abstract}
+
+\keywords{galaxies: clusters: general, X-rays: galaxies: clusters}
+
+\section{Introduction}
+
+Galaxy clusters play an important role in precision cosmology that
+complements other techniques like Type Ia supernovae
+luminosity-distance relation measurements
+\citep{perlmutter_measurements_1999,riess_observational_1998},
+baryonic acoustic oscillations (BAOs) angular-distance relation
+measurements \citep{eisenstein_detection_2005}, and observations of
+the cosmic microwave background radiation (see
+\cite{frieman_dark_2008} for a review).  For example,
+\cite{vikhlinin_chandra_2009} exploit dark energy's influence on the
+growth of structure by using 37 moderate-redshift and 49 low-redshift
+clusters to measure the shape of the galaxy cluster mass function and
+its redshift evolution, which constrain the dark energy density
+parameter $\Omega_{\Lambda}$ to $0.83 \pm 0.15$ in a non-flat
+$\Lambda\rm{CDM}$ cosmology and the dark energy equation of state
+parameter $w_0$ to $-1.14 \pm 0.21$ in a flat cosmology.
+\cite{2010MNRAS.406.1759M} have obtained similar results from
+measurements of the evolving number density of the largest clusters in
+order to constrain $w_0$ to $-1.01 \pm 0.20$.
+
+Strategies like these that compare model predictions to galaxy cluster
+sample statistics inevitably confront sample error and sample bias.
+Future surveys expected to gather samples of 10--40 thousand galaxy
+clusters\footnote{http://www.mpe.mpg.de/heg/www/Projects/EROSITA/main.html}
+will maximize survey reach while maintaining sufficient observation
+quality in order to minimize sample error, but they still must grapple
+with a major source of sample bias, which is scatter in the
+relationship used to infer cluster mass from an observable mass proxy.
+An important mass-observable relation for galaxy cluster studies
+connects dark matter halo mass to the temperature of the intracluster
+medium (ICM) inferred from its X-ray spectrum (its ``X-ray
+temperature'' $T_X$).  In this paper we investigate the possibility of
+correcting for scatter in this relation using
+temperature-inhomogeneity in the ICM, and discuss challenges that may
+exist in such a program.
+
+A significant amount of uncertainty in the dark-energy constraints
+obtainable from large cluster surveys derives from uncertainty in
+scatter about the mean scaling relations obeyed by galaxy clusters'
+bulk properties
+\citep{lima_self-calibration_2005,2010PhRvD..81h3509C}.  The key
+galaxy cluster property to measure when trying to constrain dark
+energy with clusters is the cluster's mass, which cannot be directly
+observed.  Theoretical considerations predict correlations among halo
+mass and more readily observed cluster properties, like its galaxy
+richness, the velocity dispersion of its galaxies, $T_X$, the
+Sunyaev-Zel'dovich decrement, the gas mass, and $Y_{\rm X}$ parameter,
+which is the product of $T_X$ and the gas mass inferred from X-ray
+observations \citep{kravtsov_new_2006}.  Theory also predicts
+intrinsic scatter in these relations owing to variation in cluster
+dynamical state.
+
+One way to deal with intrinsic scatter is to join a cluster model to a
+cosmological model and simultaneously fit for both, leveraging the
+statistical power of large surveys and ``self-calibrating'' the
+mass-observable relations.  Another approach is to combine observables
+that tend to depart from the expected scaling relations in opposite
+ways, yielding a new, low-scatter composite observable.  An example
+low-scatter composite observable is $Y_{\rm X}$, since at a given halo
+mass, offsets in the measured gas mass at fixed total mass tend to
+anti-correlate with offsets in the measured temperature
+\citep{kravtsov_new_2006}.
+
+Another family of low-scatter composite observables attempt to measure
+structural variation directly.  Mergers, relaxation, and non-adiabatic
+processes like radiative cooling, star formation, and feedback, ought
+to leave a visible imprint, that may allow us to measure and correct
+for scatter.  For example, one might use imaging to quantify resolved
+morphological substructure.  \cite{jeltema_cluster_2008} apply two
+observationally-motivated structure measures, the power ratios
+\citep{buote_quantifyingmorphologies_1995} and the centroid shift
+\citep{mohr_x-ray_1993}, to a sample of galaxy clusters simulated with
+\enzo\ \citep{norman_cosmological_1999,oshea_introducing_2004}.  They
+find that cluster structure correlates strongly with bias in mass
+estimates derived from $T_X$ under the assumption of hydrostatic
+equilibrium and accounting for cluster structure can be used to
+correct some of the bias.  Similarly,
+\cite{ventimiglia_substructure_2008} apply the power ratios, centroid
+shift, and axial ratio \citep{ohara_effects_2006} substructure
+measures to the same sample of simulated clusters used in this paper,
+and find that cluster substructure correlates with departures from the
+mean \mtx\ relationship
+{\, bf in the sense that clusters with more substructure tend to have a lower temperature at a given mass, }
+ and can be used to refine mass estimates
+derived from the ICM X-ray temperature.  
+{\bf \cite{piffaretti_valdarnini_substructure_2008} likewise find that greater substructure, as quantified with power ratios, correlates with lower temperature at a given mass. }
+\cite{yang_influence_2009}
+find a strong correlation between mass-temperature scatter and halo
+concentration in their sample of simulated clusters, with cooler
+clusters appearing more concentrated than warmer clusters at similar
+mass.
+
+\cite{jeltema_cluster_2008} observe, however, that line-of-sight
+projection effects lead to significant uncertainties in
+morphologically-derived substructure measures.  Substructure also
+becomes more difficult to resolve at high redshift.  Spectral
+signatures of dynamical state are therefore attractive because they
+are aspect-independent and redshift-independent.  One such spectral
+signature of dynamical state is the ``temperature ratio'' \thbr\
+\citep{mathiesen_four_2001,cavagnolo_bandpass_2008}, which divides a
+``hardband'' spectral-fit temperature by a ``broadband'' spectral-fit
+temperature.  An energy cut applied to a broadband spectrum produces a
+hardband spectrum and serves to filter out cooler line-emitting
+components of the ICM.  \cite{mathiesen_four_2001} studied the effects
+of relaxation on the observable properties of galaxy clusters, using a
+sample of numerically-simulated galaxy clusters generated by
+\cite{mohr_x-ray_1997}.  They found that hardband (2.0--9.0 keV) X-ray
+spectral fit temperatures average $\sim$20\% higher than broadband
+(0.5--9.0 keV) temperatures and suggested that this effect may signal
+the presence of cool, luminous sub-clusters lowering the broadband
+temperature.  
+{\bf \cite{valdarnini_substructure_2006} corroborated these findings in simulations that included radiative cooling.}
+
+Figures \ref{fig:f01} and \ref{fig:f02} illustrate the
+effect.  Both show a counts spectrum and single-temperature fit for a
+typical, unrelaxed cluster in our sample, with an aperture set at
+$R_{2500}$ and a core region out to $0.15 R_{2500}$ excised.  Figure
+\ref{fig:f01} is for a single-temperature model fit to the broad band,
+while figure \ref{fig:f02} is for the hard band.  Note the excess
+emission relative to the model above 4.0 keV and the deficit below 2.5
+keV that arises because the model cannot simultaneously fit both a hot
+component and a cooler, line-emitting component
+\citep{2004MNRAS.354...10M}. Figure \ref{fig:f02} shows the same
+spectrum, but with the residuals for a model fit just to the hard
+band.  In this case the fit is much better over the range from 2.0 to
+7.0 keV but under-predicts the emission below 2.0~keV.
+
+\cite{mathiesen_four_2001} suggested that the temperature skewing they
+observed might indicate a real temperature skewing detectable in real
+clusters using \chandra.  \cite{cavagnolo_bandpass_2008} fit
+single-temperature emission models to the hardband (2.0--7.0 keV) and
+broadband (0.7--7.0 keV) for a large (N = 192) sample of clusters with
+observations selected from the \chandra\ Data Archive.  These authors
+show that for a large, heterogeneous sample of clusters across a broad
+temperature range, the distribution of \thbr\ has a mean of 1.16 and
+an rms deviation $\sigma = \pm0.10$, with \thbr\ tending to be larger
+in merging systems.  They also report that while this signal is
+significant in the aggregate, the errors for any single \thbr\
+measurement and the scatter across all of the measurements together
+pose challenges for any effort to use \thbr\ either to select for
+merging systems or to obtain more accurate mass estimates.  In order
+to meet these challenges it is important also to examine \thbr\ and
+similar spectral signatures of dynamical state in a simulation
+context.  Like the original study of \cite{mathiesen_four_2001}, this
+paper examines the temperature ratio for a sample of simulated
+clusters and simulated \chandra\ observations, 
+{\bf and as in the subsequent study by \cite{valdarnini_substructure_2006}, }
+the simulated clusters analyzed here were generated using a hydrodynamical code with radiative cooling included.
+
+This paper is organized as follows.  In $\S2$, we describe the
+simulated clusters in our sample along with the \xmas2 code for
+generating their mock X-ray observations.  In $\S3$, we present our
+analysis methods and define the spectral signatures of dynamical state
+we examine.  In $\S4$, we report and discuss our results, and $\S5$
+summarizes our work.
+
+\section{Methods}
+
+\subsection{Numerical Simulations}
+This study is based on an analysis of 118 clusters simulated using the
+cosmological hydrodynamics TREE+SPH code GADGET-2
+\citep{springel_cosmological_2005}, which were simulated in a standard
+$\Lambda$ cold dark matter ($\Lambda$CDM) universe with matter density
+$\Omega_M$ = 0.3, $h$ = 0.7, $\Omega_b$ = 0.04, and $\sigma_8$ = 0.8.
+The simulation includes radiative cooling assuming an optically-thin
+gas of primordial composition, with a time-dependent UV background
+from a population of quasars, and handles star formation and supernova
+feedback using a two-phase fluid model with cold star-forming clouds
+embedded in a hot medium.  All but four of the clusters are from the
+simulation described in \cite{borgani_hydrodynamical_2004}, who
+simulated a box $192 \, h^{-1} \, {\rm Mpc}$ on a side, with $480^3$
+dark matter particles and an equal number of gas particles.  The
+present analysis considers the 114 most massive clusters within this
+box at $z = 0$, which all have $M_{200}$ greater than $5 \times
+10^{13} \, h^{-1} M_\odot$.  These are referred to as the B04 Sample
+in the remainder of this paper.  By convention, $M_{\Delta}$ refers to
+the mass contained in a sphere which has a mean density of $\Delta$
+times the critical density $\rho_c$, and whose radius is denoted by
+$R_{\Delta}$
+
+That cluster set covers the $\sim$1.5-5 keV temperature range, but the
+$192 \, h^{-1} \, {\rm Mpc}$ box is too small to contain significantly
+hotter clusters.  We therefore supplemented it with four clusters with
+masses $> 10^{15} \, h^{-1} \, M_\odot$ and temperatures $> 5$ keV
+drawn from a dark-matter-only simulation in a larger $479 \, h^{-1} \,
+{\rm Mpc}$ box \citep{2009MNRAS.398.1678D}, referred to in this paper
+as the D09 sample.  The cosmology for this simulation also was
+$\Lambda$CDM, but with $\sigma_8$ = 0.9.  These were then re-simulated
+including hydrodynamics, radiative cooling, and star formation, again
+with GADGET-2 and using the zoomed-initial-conditions technique of
+\cite{tormen_rise_1997}, with a fourfold increase in resolution.  This
+is comparable to the resolution of the clusters in the smaller box.
+Adding these four massive clusters to our sample gives a total of 118
+clusters with $M_{200}$ in the range $5 \times 10^{13} \, h^{-1}
+M_\odot$ to $2 \times 10^{15} \, h^{-1} M_\odot$.
+{\bf The mean structural properties of massive clusters drawn from a sample with $\sigma_8$ = 0.9 may differ somewhat from those of similar-mass clusters in a $\sigma_8$ = 0.8 universe because they reflect a more advanced state of cosmic evolution.  However, these four additional clusters carry minimal statistical weight in the context of the overall sample.  They are included primarily to evaluate whether the mean and dispersion of their $T_{\rm HBR}$ values are consistent with those of the lower-mass systems.}
+
+\subsection{X-Ray Simulations}
+
+The simulated galaxy clusters in our sample are processed with the
+\emph{X-ray Map Simulator} version 2 (\xmas2)
+\citep{gardini_simulating_2004,rasia_x-mas2:_2008} to generate X-ray
+images suitable for standard \chandra\ reduction techniques.  In its
+first step \xmas2 uses the outputs of the hydrodynamic code to
+calculate the emissivity of each simulation element within the chosen
+field of view and to project this onto the image plane.  In its second
+step it convolves the resulting flux with the appropriate response of
+a given detector.  In the case of our simulated \chandra\
+observations, the second step applies the response matrix file and
+ancillary response file for the ACIS S3 CCD, with a 200 kilosecond
+exposure time.  In order to separate out potential calibration issues
+from the focus of this particular study, these response matrices
+implement a constant response over the detector, and in generating the
+simulated X-ray images, the evolved zero-redshift clusters are shifted
+to a redshift sufficient to fit $R_{500}$ within the 16 arcminute
+field of view.  Because of this step, though the clusters in the
+sample are distributed over a range of physical sizes, they all have
+approximately the same apparent size projected onto the image plane
+and into the simulated observations.
+
+\subsection{\mtx\ Relation}
+In this paper, cluster mass refers to $M_{200}$, while $T_X$ refers to
+our estimated ``spectral-fit temperatures'' obtained using \xspec\
+\citep{1996ASPC..101...17A} to fit single-temperature MEKAL plasma
+models to various energy bands in simulated \xmas2 X-ray observations
+taken from the numerically-simulated clusters.  The steps involved in
+the process are described in detail in $\S$ \ref{sec:analysis}.
+
+Figure \ref{fig:f03} shows the mass-temperature relation based on our
+sample of simulated clusters and estimated spectral fit temperatures,
+measured in a broad 0.7--7 keV band within an annular aperture from
+$0.15 R_{500}$ to $R_{2500}$ as in \cite{cavagnolo_bandpass_2008}.
+The best fits to the power-law form
+\begin{equation}
+  M = M_0 \left( \frac {\tx} {2 \, {\rm keV}} \right)^\alpha
+  \label{eq:mass-temp}
+\end{equation}
+have the coefficients $M_0 = 1.09\pm0.01 \times 10^{14}\ h^{-1}
+M_{\odot}$, $\alpha = 1.57\pm0.06$ for the full sample of clusters.
+For clusters with \thard$>2.0$kev, $M_0 = 1.06\pm0.02 \times 10^{14}\
+h^{-1} M_{\odot}$, $\alpha = 1.71\pm0.07$.  As is generally the case
+for simulated clusters, the power-law indices of the mass-temperature
+relations found here are consistent with cluster self-similarity and
+the virial theorem
+\citep{kaiser_evolution_1986,navarro_simulations_1995}.  These
+relationships have scatter, which we characterize by the standard
+deviation in log space $\sigma_{\ln M}$ about the best-fit mass at
+fixed temperature $\tx$.  We find $\sigma_{\ln M} = 0.10$.
+
+\section{Analysis}
+\label{sec:analysis}
+
+\subsection{Filtering}
+\label{subsec:specextract}
+
+We use \xmas2 to simulate X-ray observations---provided as standard
+\chandra\ event files---then subject them to a series of reduction
+steps using the \chandra\ Interactive Analysis of Observations package
+(CIAO) v4.1 \citep{fruscione_ciao:_2006}.  All of the event files have
+at least 100K counts, while those for the most luminous clusters have
+over half a million counts.  Simulated observations of this quality
+provide us with an opportunity to address the question of how much of
+the scatter in our temperature-structure statistics is intrinsic.
+Consequently, our first reduction step filters each raw event file
+into a new set of event files by randomly sampling the events it
+records.  The number of counts in each file is its ``count level,''
+and in order to cover the space of typical \chandra\ archival
+observations, we apply the filtering step to each of the raw event
+files four times, at count levels 15K, 30K, 60K, and 120K.  These
+count levels roughly map to the range between observations of short
+duration or of relatively low surface-brightness objects to
+observations of long duration or of relatively high surface-brightness
+objects.
+
+\subsection{Cool Lump Excision}
+\label{sec:cool_lump_intro}
+
+An example of a filtered event file appears in Figure \ref{fig:f04} as
+a surface-brightness image.  It displays a common feature of numerical
+simulations of galaxy clusters, which is the presence of relatively
+dense, cool, and metal-rich substructures that continuously undergo
+mass accretion and have not yet come into thermal equilibrium with the
+hot ICM surrounding them \citep{2009arXiv0906.4370B}.  These bright
+point-like spots, or ``cool lumps'', typically are associated with the
+dense cool cores of smaller halos that have merged with the primary
+halo.  Generally regarded as an unphysical artifact of numerical
+simulations, at least insofar as their temperatures, densities, and
+concentrations are concerned, commonly they are excised before further
+analysis is conducted \citep{2006MNRAS.369.2013R, piffaretti_valdarnini_substructure_2008, nagai_effects_2007}.
+
+In order to study the effect that excising cool lumps has on measures
+of temperature substructure, we produce from the originals several new
+event files whose cool lumps have been excised to an increasing
+degree.  The CIAO \verb|wavdetect| tool identifies peaks in the photon
+distribution by correlating an event file's image with a sequence of
+``Mexican-Hat'' wavelet functions of differing scale sizes, measured
+in pixels, then generates a source list with associated region files.
+We use its default sequence of wavelet scale sizes in this analysis (2
+and 4 pixels), though we apply the tool four times to each filtered
+event file, each time incrementing the multiplicative factor by which
+the source regions are scaled.  In CIAO \verb|wavdetect|, the
+parameter governing this multiplicative factor is \verb|ellsigma| and
+in our study ranges between 0 to 3. A value of 0 for \verb|ellsigma|
+is equivalent to ``no masking'' while a value of 3 corresponds to what
+we call ``full masking''.  The effect is to produce versions of each
+cluster observation with a range of masking. 
+{\bf Note that the wavelet scale size is a constant fraction of the cluster size because all the clusters have been redshifted so that $R_{500}$ fits in the field of view.}
+
+We finish the extraction phase of our analysis with the following
+steps.  First, for every excised file we apply an aperture of
+$R_{2500}$ and excise the central $0.15\ R_{2500}$ region, generating
+new copies of the event files.  This step matches the procedure in
+\citet{cavagnolo_bandpass_2008} so that regions measured in the
+simulated clusters correspond to those in the \chandra\ archival
+observations.  Next, each fully-processed event file file is extracted
+into a standard pulse-invariant (PI) spectral file binned so as to
+have at least 25 counts in each energy channel.  The extraction phase
+is complete when each original raw event file generates PI spectral
+files suitable for spectral fitting in \xspec.
+
+\subsection{Spectral Fitting}
+
+The PI spectral files are then fed into \xspec\ v12.5.0 for spectral
+fitting.  In order to form the temperature ratio \thbr\ two fits are
+performed for each spectrum.  The first fit is over the hard band from
+2.0$(1+z)^{-1}$--7 keV, for which the $(1+z)^{-1}$ factor exists in
+order to shift the 2 keV cutoff from the observer's frame to the
+cluster's rest-frame. The simulated clusters occupy a range of
+redshifts because larger clusters are translated to higher redshifts
+in order to fit $R_{500}$ within 16 arc-minutes, when creating
+artificial observations.  The second fit is over the broad band,
+including all energy channels in the spectrum from 0.7--7 keV.  Every
+fit is made by minimizing the $\chi^2$ statistic for a
+single-temperature MEKAL model multiplied by a warm-absorber (WABS, to
+account for Galactic absorption).  The Galactic column is fixed to
+$N_H = 5 \times 10^{20}\ {\rm cm}^{-2}$ and the metallicity to 0.3
+Solar, leaving the temperature of the emission component, its H
+density (although this makes no difference), and its normalization as
+the only free parameters.
+
+\subsection{Quantifying Temperature Structure}
+\label{sec:coolresid}
+
+We adopt two spectral measurements of temperature structure.  The
+first is the temperature ratio \thbr\ of
+\cite{cavagnolo_bandpass_2008} and is found in the following way.  For
+each simulated cluster in our sample, for each count level (15K, 30K,
+60K, 120K), and for each cool lump masking level (0, 1, 2, 3), we find
+a spectral-fit temperature in the hard band and the broad band and
+form the temperature ratio \thbr.  Emission from cooler, line-emitting
+metal-rich parts of the ICM ought to be excluded from the hard band,
+so we expect that a \thbr\ value greater than unity signals the
+presence of merging sub-clumps.
+
+Our second measure of temperature, which we call the ``cool
+residual,'' ($RES_{cool}$) compares an observation's actual broadband
+count rate to a model-predicted count rate for a spectral model fit
+only over the hard band.  Again, we determined a spectral-fit
+temperature for each combination of cluster, count level, and masking
+level, except that in this case we performed only a hardband fit.
+Since emission from cooler components should be excluded from this
+band, in general we achieve good fits even when the count level is
+sufficiently high that broadband fits may formally have large reduced
+$\chi^2$ values.  From this hardband model fit we estimate the
+corresponding broadband count rate and calculate its percentage
+deviation from the actual broadband count rate.  While
+single-temperature systems will have actual count rates that are
+essentially the same as their model count rates, the introduction of
+cooler, luminous substructure components should generate an excess
+broadband count rate relative to the model.  This measure of
+temperature substructure avoids the uncertainties associated with a
+single-temperature fit to the broad band.
+
+\section{Results and Discussion}
+\label{sec:results}
+
+Having calculated spectral-fit temperatures, \thbr, and the cool
+residual for all of the clusters in our sample, we now have the means
+to study how well temperature structure correlates with departures
+from the mean \mtx\ relation, and how well these measures can be used
+to obtain better mass estimates.  We will also examine how our results
+depend on the removal of the cool lumps.
+
+\subsection{\thbr\ from Simulations.}
+
+We present in Figure \ref{fig:f05} the temperature ratios \thbr\ for
+our simulation sample, plotted as a function of the broadband
+temperature fit \tbroad.  This figure is similar to Figure 8 in
+\cite{cavagnolo_bandpass_2008}, which shows that that the mean value
+of \thbr\ observed among clusters in the {\em Chandra} archive is
+$\langle T_{\rm HBR} \rangle = 1.16$, with a standard deviation of
+$\sigma_{\rm THBR} = 0.1$.  We remind the reader of important
+differences between the two samples being considered.  The \chandra\
+archive sample of \cite{cavagnolo_bandpass_2008} contains clusters
+most of which have $k_BT >$ 3 keV, whereas most of the clusters in our
+sample have $k_BT <$ 3 keV.  Nevertheless, even with that caveat the
+temperature ratios of the simulated clusters are distributed in
+approximately the same way as are those in the real sample of
+\cite{cavagnolo_bandpass_2008}, with $\langle T_{\rm HBR} \rangle =
+1.12$ and $\sigma_{\rm THBR} = 0.15$, provided the cool lumps are not
+excised (circles in Figure \ref{fig:f05}).  When the cool lumps are
+excised (squares in Figure \ref{fig:f05}), the mean and variance of
+\thbr\ diminish, with $\langle T_{\rm HBR} \rangle = 1.00$ and
+$\sigma_{\rm THBR} = 0.10$.  These values are for the full 120K count
+data, though the full set of $\langle$\thbr$\rangle$ for the four
+\verb|ellsigma| values and four count values are tabulated in Table
+\ref{tbl:01}.  This table provides mean values for \thbr\ and its
+variance for all of the clusters in the sample, and for a subset whose
+\thard\ value is greater than 2 keV.  Much of the variance derives
+from the lower-temperature clusters, and as they are removed the
+variance in \thbr\ drops significantly, especially when full-masking
+is applied.
+
+Figure \ref{fig:f06} presents a similar effect for $RES_{cool}$.
+Here, we see that the excision of cool lumps again reduces the mean
+and variance of the temperature substructure measure, although in this
+case the effect is more dramatic.  Evidently, the presumably
+unphysical cool lumps in simulated clusters are necessary to reproduce
+the distribution of quantitative temperature substructure measures
+found in real clusters.  This is a subject which we return to in
+Section \ref{sec:masking}.
+
+
+\subsection{Temperature Structure and Scaling Relations}
+\label{sec:mtx}
+
+Our original motivation for conducting this study was to determine if
+temperature structure, as quantified by the temperature ratio \thbr,
+correlates with and can be used to correct for departures from the
+mean mass-temperature relation \mtx.  In order to test this idea, we
+define the ``mass offset'' at fixed temperature by the relation
+\begin{equation}
+  \delta \ln M (\tx) = \ln \left[ \frac {M} {M_{\rm pred}(\tx)} \right]
+  \label{eq:deltaM}
+\end{equation}
+where $M$ is the cluster's actual mass, and $M_{\rm pred}$ is the mass
+predicted from the mean \mtx\ relation.  Figure \ref{fig:f07} plots
+the mass offsets for our simulated clusters as a function of \thbr,
+for the case in which predicted masses are derived from the \mtx\
+relation for the broadband spectral fit temperature.  Values of \thbr\
+calculated both with cool lumps excised (squares) and without excision
+(circles) appear in this figure.  Error bars on \thbr\ are omitted for
+clarity.  While there is some correlation, such that clusters with
+more temperature structure (larger \thbr) tend to be more massive than
+predicted by the mean \mtx\ relation, the trend is weak and has
+substantial scatter.  Excising the cool lumps weakens the trend.
+Figure \ref{fig:f08} shows the same comparison for the $RES_{cool}$
+measure instead of \thbr, and for we again find that excising the cool
+lumps has an even larger effect for \thbr\, though in both cases
+accounting for temperature substructure does not greatly reduce
+scatter in mass offset.
+
+
+\subsection{Effects of Masking Strategy}
+\label{sec:masking}
+
+We now examine the decline in \thbr\ and its variance as cool lumps
+are excised, beginning with Figure \ref{fig:f09}, which focuses on
+\thbr.  Here, we plot the statistic's standard deviation $\sigma_{\rm
+  THBR}$ as a function of the two dimensions along which we adjust our
+analysis pipeline, with the top panel devoted to the masking strategy,
+and the bottom panel devoted to the count level.  Focusing on the top
+panel, we see that increasing the \verb|ellsigma| parameter of the
+CIAO \verb|wavdetect| tool from 0 to 3 reduces $\sigma_{\rm THBR}$
+from $\sim$0.24 down to $\sim$0.16, when the observations are
+relatively ``poor'' (with $\sim$15K counts).  With higher-quality
+observations of 60K or 120K counts, the decline is more modest, and $\sigma_{\rm THBR}$ for full masking ends up being substantially less than the value of 0.15 observed in the \cite{cavagnolo_bandpass_2008} sample.
+
+Figure \ref{fig:f10} helps show why the temperature ratio \thbr\ and
+its variance decline as the cool lumps are removed.  It plots the
+sample average of the relative change in temperature as the CIAO
+\verb|wavdetect| \verb|ellsigma| parameter is increased.  As more of
+each cool lump is excised, both the broadband spectral fit
+temperature, and the hardband fit temperature increase.  However, the
+increase is significantly larger for the broadband temperature, as
+the cool lumps' contribution to the flux is already largely excluded
+from the hardband fits.  The top panel in this figure shows this
+effect for spectra with approximately 120K counts, while the bottom
+panel is for spectra with approximately 15K counts.
+
+Another way of visualizing the effect of more aggressive masking is
+depicted in Figure \ref{fig:f11}.  The top panel in this figure is
+similar to Figure \ref{fig:f06} in that it occupies the
+\tbroad--\thbr\ plane, with \thbr\ plotted as a function of \tbroad\
+for our simulated clusters.  Arrows illustrate the shift in \thbr\ and
+in \tbroad, as the cool lumps are excised.  Some of the clusters
+experience very large shifts in both quantities, while others
+experience no shifts at all.  The former are associated with clusters
+that have many well-defined and bright cool lumps, while the latter
+correspond to those clusters that are completely free of cool lumps.
+The bottom panel in this figure shows just the size of this shift for
+the \thbr\ statistic, from which we can see that some clusters indeed
+have a shift of precisely 0.  Again, these are clusters whose
+simulated X-ray observations are unchanged after applying the CIAO
+\verb|wavdetect| tool because it finds no sources to mask out.
+% Comparing Figure \ref{fig:f11} and \ref{fig:f12}, we also see that the
+% dependence of the broadband spectral-fit temperature on the
+% aggressiveness of masking does not depend strongly on aperture size.
+
+{\bf HERE MIGHT BE A GOOD SPOT FOR A SUB-SECTION ON CORRELATIONS BETWEEN SUBSTRUCTURE MEASURES AND THBR.}
+\section{Summary}
+
+We used a sample of galaxy clusters simulated with radiative cooling
+and supernova feedback, along with simulated \chandra\ X-ray
+observations of these clusters, to study temperature inhomogeneity as
+a signature of cluster dynamical state.  Specifically, we adopted two
+methods of quantifying temperature inhomogeneity spectroscopically,
+the temperature ratio \thbr\
+\citep{mathiesen_four_2001,cavagnolo_bandpass_2008} and what we call
+the $RES_{cool}$.  The former is the ratio of a hardband X-ray
+spectral-fit temperature to a broadband temperature, and becomes
+greater than 1 for clusters whose ICM contains cool, over-luminous
+sub-components.  The latter is the excess broadband count rate
+relative to the count rate predicted by a model fit to the hard X-ray
+band.  Though our simulated clusters are typically less massive and
+have lower temperatures than the \chandra\ archive clusters in
+\cite{cavagnolo_bandpass_2008}, we find that their temperature ratios
+\thbr\ occupy generally the same distribution as the observed
+clusters.
+
+We also looked for an opportunity to combine \thbr\ and the cool
+residual with the mean mass-temperature relation to obtain better mass
+estimates than are achieved just with the scaling relation alone.  We
+find, however, that while both \thbr\ and the $RES_{cool}$ are
+correlated with offset from the \mtx\ relation and these correlations are weak, at least with this sample. We conclude that
+these measures of temperature inhomogeneity are not very effective at
+reducing scatter in the mass-temperature relation.
+
+Finally, we note a particular difficulty that arises when trying to
+use clusters from hydrodynamic simulations to calibrate
+scatter-correction observables based on temperature inhomogeneity,
+such as \thbr.  Historically, simulated clusters have tended to
+exhibit their own kind of ``over-cooling problem'', in which dense
+lumps of luminous, cool gas associated with merged sub-halos appear.
+These cool lumps are often excised from simulated clusters before
+their global properties are measured, but masking them appears to make
+the remaining temperature structure of the simulated clusters overly
+homogeneous.  This finding suggests that real clusters may have cooler
+sub-components, that are more diffuse and less concentrated than in
+their simulated counterparts.  Some physical process, perhaps thermal
+conduction, 
+{\bf turbulent heat transport \citep[e.g.,][]{Dennis_Chandran_2005, Parrish_Quataert_Sharma_2010, Ruszkowski_Oh_2011},}
+ or a more aggressive form of feedback, prevents cool lumps from forming in real clusters and might not completely eliminate those temperature inhomogeneities.  Newer simulations incorporate treatments of conduction and AGN feedback
+{\bf, as well as more accurate treatments of mixing,}
+and it will be interesting to revisit these temperature inhomogeneity measures in simulated clusters when large samples of such simulated clusters become available.
+
+\acknowledgments The authors wish to thank Stefano Borgani for
+contributing the simulation data on which this project was based.
+This work was supported by NASA through grants NNG04GI89G and
+NNG05GD82G, through Chandra theory grant TM8-9010X, and through
+Chandra archive grant SAOAR5-6016X.  Some of it was done at the Kavli Institute for Theoretical Physics in Santa Barbara, supported in part by the National Science Foundation under Grant No. NSF PHY05-51164.
+
+%\bibliography{master}
+
+\begin{thebibliography}{34}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{{Arnaud}(1996)}]{1996ASPC..101...17A}
+{Arnaud}, K.~A. 1996, in Astronomical Society of the Pacific Conference Series,
+  Vol. 101, Astronomical Data Analysis Software and Systems V, ed.
+  {G.~H.~Jacoby \& J.~Barnes}, 17--+
+
+\bibitem[{Borgani(2004)}]{borgani_hydrodynamical_2004}
+Borgani, S. 2004, Astrophysics and Space Science, 294, 51
+
+\bibitem[{{Borgani} \& {Kravtsov}(2009)}]{2009arXiv0906.4370B}
+{Borgani}, S., \& {Kravtsov}, A. 2009, ArXiv e-prints
+
+\bibitem[{Buote \& Tsai(1995)}]{buote_quantifyingmorphologies_1995}
+Buote, D.~A., \& Tsai, J.~C. 1995, Astrophysical Journal, 452, 522
+
+\bibitem[{Cavagnolo {et~al.}(2008)Cavagnolo, Donahue, Voit, \&
+  Sun}]{cavagnolo_bandpass_2008}
+Cavagnolo, K.~W., Donahue, M., Voit, G.~M., \& Sun, M. 2008, Astrophysical
+  Journal, 682, 821
+
+\bibitem[{{Cunha} \& {Evrard}(2010)}]{2010PhRvD..81h3509C}
+{Cunha}, C.~E., \& {Evrard}, A.~E. 2010, \prd, 81, 083509
+
+\bibitem[{{Dennis} \& {Chandran}(2005)}]{Dennis_Chandran_2005}
+{Dennis}, T.~J., \& {Chandran}, B.~D.~G. 2005, \apj, 622, 205
+
+\bibitem[{{Dolag} \& {Stasyszyn}(2009)}]{2009MNRAS.398.1678D}
+{Dolag}, K., \& {Stasyszyn}, F. 2009, \mnras, 398, 1678
+
+\bibitem[{Eisenstein {et~al.}(2005)Eisenstein, Zehavi, Hogg, Scoccimarro,
+  Blanton, Nichol, Scranton, Seo, Tegmark, Zheng, Anderson, Annis, Bahcall,
+  Brinkmann, Burles, Castander, Connolly, Csabai, Doi, Fukugita, Frieman,
+  Glazebrook, Gunn, Hendry, Hennessy, Ivezić, Kent, Knapp, Lin, Loh, Lupton,
+  Margon, {McKay}, Meiksin, Munn, Pope, Richmond, Schlegel, Schneider,
+  Shimasaku, Stoughton, Strauss, {SubbaRao}, Szalay, Szapudi, Tucker, Yanny, \&
+  York}]{eisenstein_detection_2005}
+Eisenstein, D.~J., Zehavi, I., Hogg, D.~W., Scoccimarro, R., Blanton, M.~R.,
+  Nichol, R.~C., Scranton, R., Seo, H., Tegmark, M., Zheng, Z., Anderson,
+  S.~F., Annis, J., Bahcall, N., Brinkmann, J., Burles, S., Castander, F.~J.,
+  Connolly, A., Csabai, I., Doi, M., Fukugita, M., Frieman, J.~A., Glazebrook,
+  K., Gunn, J.~E., Hendry, J.~S., Hennessy, G., Ivezić, Z., Kent, S., Knapp,
+  G.~R., Lin, H., Loh, Y., Lupton, R.~H., Margon, B., {McKay}, T.~A., Meiksin,
+  A., Munn, J.~A., Pope, A., Richmond, M.~W., Schlegel, D., Schneider, D.~P.,
+  Shimasaku, K., Stoughton, C., Strauss, M.~A., {SubbaRao}, M., Szalay, A.~S.,
+  Szapudi, I., Tucker, D.~L., Yanny, B., \& York, D.~G. 2005, Astrophysical
+  Journal, 633, 560
+
+\bibitem[{Frieman {et~al.}(2008)Frieman, Turner, \&
+  Huterer}]{frieman_dark_2008}
+Frieman, J.~A., Turner, M.~S., \& Huterer, D. 2008, Annual Review of Astronomy
+  and Astrophysics, 46, 385
+
+\bibitem[{Fruscione {et~al.}(2006)Fruscione, {McDowell}, Allen, Brickhouse,
+  Burke, Davis, Durham, Elvis, Galle, Harris, Huenemoerder, Houck, Ishibashi,
+  Karovska, Nicastro, Noble, Nowak, Primini, Siemiginowska, Smith, \&
+  Wise}]{fruscione_ciao:_2006}
+Fruscione, A., {McDowell}, J.~C., Allen, G.~E., Brickhouse, N.~S., Burke,
+  D.~J., Davis, J.~E., Durham, N., Elvis, M., Galle, E.~C., Harris, D.~E.,
+  Huenemoerder, D.~P., Houck, J.~C., Ishibashi, B., Karovska, M., Nicastro, F.,
+  Noble, M.~S., Nowak, M.~A., Primini, F.~A., Siemiginowska, A., Smith, R.~K.,
+  \& Wise, M. 2006, in {CIAO:} Chandra's data analysis system, Vol. 6270, 60
+
+\bibitem[{Gardini {et~al.}(2004)Gardini, Rasia, Mazzotta, Tormen, Grandi, \&
+  Moscardini}]{gardini_simulating_2004}
+Gardini, A., Rasia, E., Mazzotta, P., Tormen, G., Grandi, S.~D., \& Moscardini,
+  L. 2004, Monthly Notices of the Royal Astronomical Society, 351, 505
+
+\bibitem[{Jeltema {et~al.}(2008)Jeltema, Hallman, Burns, \&
+  Motl}]{jeltema_cluster_2008}
+Jeltema, T.~E., Hallman, E.~J., Burns, J.~O., \& Motl, P.~M. 2008,
+  Astrophysical Journal, 681, 167
+
+\bibitem[{Kaiser(1986)}]{kaiser_evolution_1986}
+Kaiser, N. 1986, Monthly Notices of the Royal Astronomical Society, 222, 323
+
+\bibitem[{Kravtsov {et~al.}(2006)Kravtsov, Vikhlinin, \&
+  Nagai}]{kravtsov_new_2006}
+Kravtsov, A.~V., Vikhlinin, A., \& Nagai, D. 2006, Astrophysical Journal, 650,
+  128
+
+\bibitem[{Lima \& Hu(2005)}]{lima_self-calibration_2005}
+Lima, M., \& Hu, W. 2005, Physical Review D, 72, 43006
+
+\bibitem[{{Mantz} {et~al.}(2010){Mantz}, {Allen}, {Rapetti}, \&
+  {Ebeling}}]{2010MNRAS.406.1759M}
+{Mantz}, A., {Allen}, S.~W., {Rapetti}, D., \& {Ebeling}, H. 2010, \mnras, 406,
+  1759
+
+\bibitem[{Mathiesen \& Evrard(2001)}]{mathiesen_four_2001}
+Mathiesen, B.~F., \& Evrard, A.~E. 2001, Astrophysical Journal, 546, 100
+
+\bibitem[{{Mazzotta} {et~al.}(2004){Mazzotta}, {Rasia}, {Moscardini}, \&
+  {Tormen}}]{2004MNRAS.354...10M}
+{Mazzotta}, P., {Rasia}, E., {Moscardini}, L., \& {Tormen}, G. 2004, \mnras,
+  354, 10
+
+\bibitem[{Mohr \& Evrard(1997)}]{mohr_x-ray_1997}
+Mohr, J.~J., \& Evrard, A.~E. 1997, Astrophysical Journal, 491, 38
+
+\bibitem[{Mohr {et~al.}(1993)Mohr, Fabricant, \& Geller}]{mohr_x-ray_1993}
+Mohr, J.~J., Fabricant, D.~G., \& Geller, M.~J. 1993, Astrophysical Journal,
+  413, 492
+
+\bibitem[{Nagai {et~al.}(2007)Nagai, Kravtsov, \&
+  Vikhlinin}]{nagai_effects_2007}
+Nagai, D., Kravtsov, A.~V., \& Vikhlinin, A. 2007, Astrophysical Journal, 668,
+  1
+
+\bibitem[{Navarro {et~al.}(1995)Navarro, Frenk, \&
+  White}]{navarro_simulations_1995}
+Navarro, J.~F., Frenk, C.~S., \& White, S. D.~M. 1995, Monthly Notices of the
+  Royal Astronomical Society, 275, 720
+
+\bibitem[{Norman \& Bryan(1999)}]{norman_cosmological_1999}
+Norman, M.~L., \& Bryan, G.~L. 1999, in Cosmological Adaptive Mesh
+  {RefinementCD}, Vol. 240, 19
+
+\bibitem[{{O'Hara} {et~al.}(2006){O'Hara}, Mohr, Bialek, \&
+  Evrard}]{ohara_effects_2006}
+{O'Hara}, T.~B., Mohr, J.~J., Bialek, J.~J., \& Evrard, A.~E. 2006,
+  Astrophysical Journal, 639, 64
+
+\bibitem[{{O'Shea} {et~al.}(2004){O'Shea}, Bryan, Bordner, Norman, Abel,
+  Harkness, \& Kritsuk}]{oshea_introducing_2004}
+{O'Shea}, B.~W., Bryan, G., Bordner, J., Norman, M.~L., Abel, T., Harkness, R.,
+  \& Kritsuk, A. 2004, Introducing Enzo, an {AMR} Cosmology Application,
+  {http://adsabs.harvard.edu/abs/2004astro.ph..3044O}
+
+\bibitem[{{Parrish}, {Quataert} \& {Sharma}(2010)}]{Parrish_Quataert_Sharma_2010}
+{Parrish}, I.~J., {Quataert}, E., \& {Sharma}, P. 2010, \apj, 712, 194
+
+\bibitem[{Perlmutter {et~al.}(1999)Perlmutter, Aldering, Goldhaber, Knop,
+  Nugent, Castro, Deustua, Fabbro, Goobar, Groom, Hook, Kim, Kim, Lee, Nunes,
+  Pain, Pennypacker, Quimby, Lidman, Ellis, Irwin, {McMahon}, {Ruiz-Lapuente},
+  Walton, Schaefer, Boyle, Filippenko, Matheson, Fruchter, Panagia, Newberg,
+  Couch, \& Project}]{perlmutter_measurements_1999}
+Perlmutter, S., Aldering, G., Goldhaber, G., Knop, R.~A., Nugent, P., Castro,
+  P.~G., Deustua, S., Fabbro, S., Goobar, A., Groom, D.~E., Hook, I.~M., Kim,
+  A.~G., Kim, M.~Y., Lee, J.~C., Nunes, N.~J., Pain, R., Pennypacker, C.~R.,
+  Quimby, R., Lidman, C., Ellis, R.~S., Irwin, M., {McMahon}, R.~G.,
+  {Ruiz-Lapuente}, P., Walton, N., Schaefer, B., Boyle, B.~J., Filippenko,
+  A.~V., Matheson, T., Fruchter, A.~S., Panagia, N., Newberg, H. J.~M., Couch,
+  W.~J., \& Project, T. S.~C. 1999, Astrophysical Journal, 517, 565
+
+\bibitem[{Piffaretti \& Valdarnini(2008)}]{piffaretti_valdarnini_substructure_2008}
+Piffaretti, R. \& Valdarnini, R. 2008, A\&A, 491, 71
+
+\bibitem[{{Rasia} {et~al.}(2006){Rasia}, {Ettori}, {Moscardini}, {Mazzotta},
+  {Borgani}, {Dolag}, {Tormen}, {Cheng}, \& {Diaferio}}]{2006MNRAS.369.2013R}
+{Rasia}, E., {Ettori}, S., {Moscardini}, L., {Mazzotta}, P., {Borgani}, S.,
+  {Dolag}, K., {Tormen}, G., {Cheng}, L.~M., \& {Diaferio}, A. 2006, \mnras,
+  369, 2013
+
+\bibitem[{Rasia {et~al.}(2008)Rasia, Mazzotta, Bourdin, Borgani, Tornatore,
+  Ettori, Dolag, \& Moscardini}]{rasia_x-mas2:_2008}
+Rasia, E., Mazzotta, P., Bourdin, H., Borgani, S., Tornatore, L., Ettori, S.,
+  Dolag, K., \& Moscardini, L. 2008, Astrophysical Journal, 674, 728
+
+\bibitem[{Riess {et~al.}(1998)Riess, Filippenko, Challis, Clocchiatti, Diercks,
+  Garnavich, Gilliland, Hogan, Jha, Kirshner, Leibundgut, Phillips, Reiss,
+  Schmidt, Schommer, Smith, Spyromilio, Stubbs, Suntzeff, \&
+  Tonry}]{riess_observational_1998}
+Riess, A.~G., Filippenko, A.~V., Challis, P., Clocchiatti, A., Diercks, A.,
+  Garnavich, P.~M., Gilliland, R.~L., Hogan, C.~J., Jha, S., Kirshner, R.~P.,
+  Leibundgut, B., Phillips, M.~M., Reiss, D., Schmidt, B.~P., Schommer, R.~A.,
+  Smith, R.~C., Spyromilio, J., Stubbs, C., Suntzeff, N.~B., \& Tonry, J. 1998,
+  Astronomical Journal, 116, 1009
+
+\bibitem[{{Ruszkowski} \& {Oh}(2011)}]{Ruszkowski_Oh_2011}
+{Ruszkowski}, M., \& {Oh}, S.~P. 2011, \apj, 414, 1493
+
+\bibitem[{Springel(2005)}]{springel_cosmological_2005}
+Springel, V. 2005, Monthly Notices of the Royal Astronomical Society, 364, 1105
+
+\bibitem[{Tormen(1997)}]{tormen_rise_1997}
+Tormen, G. 1997, Monthly Notices of the Royal Astronomical Society, 290, 411
+
+\bibitem[{Valdarnini(2006)}]{valdarnini_substructure_2006}
+Valdarnini, R. 2006, New Astronomy, 12, 71
+
+\bibitem[{Ventimiglia {et~al.}(2008)Ventimiglia, Voit, Donahue, \&
+  Ameglio}]{ventimiglia_substructure_2008}
+Ventimiglia, D.~A., Voit, G.~M., Donahue, M., \& Ameglio, S. 2008,
+  Astrophysical Journal, 685, 118
+
+\bibitem[{Vikhlinin {et~al.}(2009)Vikhlinin, Kravtsov, Burenin, Ebeling,
+  Forman, Hornstrup, Jones, Murray, Nagai, Quintana, \&
+  Voevodkin}]{vikhlinin_chandra_2009}
+Vikhlinin, A., Kravtsov, A.~V., Burenin, R.~A., Ebeling, H., Forman, W.~R.,
+  Hornstrup, A., Jones, C., Murray, S.~S., Nagai, D., Quintana, H., \&
+  Voevodkin, A. 2009, Astrophysical Journal, 692, 1060
+
+\bibitem[{Yang {et~al.}(2009)Yang, Ricker, \& Sutter}]{yang_influence_2009}
+Yang, H.~K., Ricker, P.~M., \& Sutter, P.~M. 2009, Astrophysical Journal, 699,
+  315
+
+\end{thebibliography}
+
+
+\begin{deluxetable}{rccccc}
+\tablecaption{\thbr\ \& $\sigma_{T_{HBR}}$ \label{tbl:01}}
+\tablehead{counts & ellsigma & $\overline{T_{\rm HBR}}$\tablenotemark{a} &
+  $\overline{\sigma}$\tablenotemark{a} & $\overline{T_{\rm HBR}}$\tablenotemark{b} & $\overline{\sigma}$\tablenotemark{b}}
+\tablewidth{0pt}
+\tabletypesize{\small}
+\startdata
+15000  & 0 & 1.28 & 0.24 & 1.28 & 0.17 \\
+15000  & 1 & 1.24 & 0.21 & 1.24 & 0.15 \\
+15000  & 2 & 1.17 & 0.16 & 1.17 & 0.12 \\
+15000  & 3 & 1.16 & 0.16 & 1.16 & 0.11 \\
+30000  & 0 & 1.25 & 0.21 & 1.23 & 0.16 \\
+30000  & 1 & 1.22 & 0.18 & 1.21 & 0.13 \\
+30000  & 2 & 1.16 & 0.14 & 1.15 & 0.10 \\
+30000  & 3 & 1.15 & 0.13 & 1.14 & 0.09 \\
+60000  & 0 & 1.18 & 0.13 & 1.19 & 0.14 \\
+60000  & 1 & 1.17 & 0.13 & 1.16 & 0.11 \\
+60000  & 2 & 1.13 & 0.11 & 1.12 & 0.08 \\
+60000  & 3 & 1.12 & 0.09 & 1.11 & 0.07 \\
+120000 & 0 & 1.16 & 0.12 & 1.17 & 0.13 \\
+120000 & 1 & 1.14 & 0.10 & 1.14 & 0.10 \\
+120000 & 2 & 1.12 & 0.10 & 1.11 & 0.08 \\
+120000 & 3 & 1.11 & 0.10 & 1.10 & 0.07 \\
+\enddata
+\tablenotetext{a}{All Clusters}
+\tablenotetext{b}{Clusters with $k_BT_{\rm 2.0-7} > 2$ keV}
+\end{deluxetable}
+
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=0.7\textwidth,angle=-90]{f01.ps}
+  \caption{\xmas2 simulated counts spectrum for a simulated cluster
+    that appears to have significant temperature structure.  A
+    single-temperature MEKAL model fit to the [0.7--7.0] keV
+    broadband is over-plotted as the solid line, with
+    $k_{B}T=2.42\pm0.03$ keV.  Fit residuals appear in the bottom
+    panel.  This figure and Figure \ref{fig:f02} illustrate
+    qualitatively the effect that additional cool components have on a
+    single-temperature fit.}
+  \label{fig:f01}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=0.7\textwidth,angle=-90]{f02.ps}
+  \caption{\xmas2 simulated counts spectrum for the same simulated
+    cluster as in the previous figure.  A single-temperature MEKAL
+    model fit to the [2.0--7.0] keV hardband is over-plotted as the
+    solid line, with $k_BT=3.52\pm0.2$ keV.  Fit residuals appear in
+    the bottom panel.}
+  \label{fig:f02}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=0.8\textwidth, trim=0mm 0mm 0mm 0mm, clip=true]{f03.eps}
+  \caption{Mass-temperature (\mtx) relation for the clusters in our
+    sample.  Clusters with $k_BT <$ 2 keV are plotted in purple open
+    triangles, while clusters with $k_BT \ge$ 2 keV are plotted in
+    blue open squares, and the four massive D09 clusters in green open
+    circles.  Mean relations are plotted with solid lines for the
+    whole sample, and dashed lines for clusters with $k_BT \ge$ 2keV.
+    Finally, note that average temperatures are taken within a
+    core-excised annulus whose outer radius is placed at $R_{2500}$.
+    \ColorRef}
+  \label{fig:f03}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=1.0\textwidth, trim=0mm 0mm 0mm 0mm, clip=true]{f04.eps}
+  \caption{\xmas2 simulated X-ray surface-brightness images for the
+    same cluster whose spectrum is presented in Figures \ref{fig:f01}
+    and \ref{fig:f02}.  The aperture is set at $R_{2500}$ and a core
+    region of size $0.15R_{2500}$ is excised.  Note the
+    surface-brightness peaks in the image.  In this study these are
+    detected automatically by the CIAO tool wavdetect, which generates
+    source regions identified in this figure by red ellipses.  Labeled
+    ``cool lumps'' in this analysis, they are subjected to varying
+    degrees of excision, from no masking (\emph{left}) to full masking
+    (\emph{right}), as described in the text.  \ColorRef}
+  \label{fig:f04}
+\end{figure}
+
+% \begin{figure}[p]
+%   \centering
+%   \includegraphics[width=0.8\textwidth, trim=0mm 0mm 0mm 0mm, clip=true]{f05.eps}
+%   \caption{An \xmas2 simulated X-ray surface-brightness image for the
+%     same cluster as in Figure \ref{fig:f04}.  Note that the cool lumps
+%     in this analysis have been largely excised.\ColorRef}
+%   \label{fig:f05}
+% \end{figure}
+
+\begin{figure*}[p]
+  \centering
+  \includegraphics[width=0.9\textwidth, trim=0mm 30mm 0mm 30mm, clip=true]{f05.eps}
+  \caption{\thbr\ plotted against \tbroad\ for simulated \xmas2
+    observations that have approximately 120K counts.  Hydrodynamic
+    simulations may produce spurious over-condensations of cool gas.
+    These cool lumps can be excised using the CIAO tool wavdetect,
+    whose aggressiveness can be controlled via its
+    ellsigma parameter.  Squares correspond to
+    single-temperature MEKAL fits whose underlying observations are
+    processed by wavdetect with ellsigma set to 3,
+    and circles correspond to those with ellsigma
+    set to 0. Finally, note that the 4 massive D09 clusters are
+    denoted by filled symbols rather than by open symbols.  The solid
+    line represents the mean when cool lumps are not removed, while
+    the dashed line represents the mean when they are removed.  The
+    dotted line indicates \thbr\ = 1.  \ColorRef}
+  \label{fig:f05}
+\end{figure*}
+
+\begin{figure*}[p]
+  \centering
+  \includegraphics[width=0.9\textwidth, trim=0mm 30mm 0mm 30mm, clip=true]{f06.eps}
+  \caption{$RES_{cool}$ plotted against \tbroad\ for simulated \xmas2
+    observations that have approximately 120K counts.  This statistic
+    tracks the percent excess count rate of the actual observation
+    with respect to count rate for a MEKAL model fit to just the hard
+    band.  Squares correspond to single-temperature MEKAL fits whose
+    underlying observations are processed by wavdetect with
+    ellsigma set to 3, and circles correspond to
+    those with ellsigma set to 0. As in the previous
+    plot, the 4 massive D09 clusters are denoted by filled symbols
+    rather than by open symbols.  The solid line represents the mean
+    when cool lumps are not removed, the dashed line represents the
+    mean when they are removed, and the dotted line indicates zero
+    residual.  \ColorRef}
+  \label{fig:f06}
+\end{figure*}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=0.8\textwidth, trim=0mm 0mm 0mm 0mm, clip=true]{f07.eps}
+  \caption{Relationship between \thbr\ and mass offset $\delta\ln M
+    (\tx)$ from the mean \mtx\ relationship for the clusters in
+    combined B04+D09 simulation sample.  The temperatures in this
+    relation are our broadband spectral fit temperatures.  Squares
+    correspond to simulated \xmas2 observations that are processed by
+    wavdetect with ellsigma set to 3 (full masking), while circles
+    correspond to observations that have ellsigma set to 0.
+    \ColorRef}
+  \label{fig:f07}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=0.8\textwidth, trim=0mm 0mm 0mm 0mm, clip=true]{f08.eps}
+  \caption{Relationship between $RES_{cool}$ and mass offset
+    $\delta\ln M (\tx)$ from the mean \mtx\ relationship for the
+    clusters in combined B04+D09 simulation sample.  The temperatures
+    in this relation are our broadband spectral fit temperatures.
+    Squares correspond to simulated \xmas2 observations that are
+    processed by wavdetect with ellsigma set to 3, while circles
+    correspond to observations that have ellsigma set to 0.
+    \ColorRef}
+  \label{fig:f08}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=0.9\textwidth, trim=0mm 0mm 0mm 0mm, clip=true]{f09.eps}
+  \caption{(\emph{top}) Decline in the \thbr\ standard deviation
+    $\sigma_{\rm THBR}$ as wavdetect's ellsigma
+    parameter ranges from 0 to 3.  These are plotted for a family of
+    simulated observations of increasingly higher quality, from
+    approximately 15k counts to approximately 120k counts.
+    (\emph{bottom}) Decline in $\sigma_{\rm THBR}$ as simulated \xmas2
+    observations go from lowest-quality (approximately 15k counts) to
+    highest-quality (approximately 120k counts).  These are plotted
+    for a family of simulated observations with wavdetect's
+    ellsigma parameter ranges from 0 to 3.
+    \ColorRef}
+  \label{fig:f09}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=0.9\textwidth, trim=0mm 0mm 0mm 0mm, clip=true]{f10.eps}
+  \caption{Relative change in spectral fit temperatures as the cool
+    lumps are removed from the simulated clusters for high-quality
+    simulated observations.  (\emph{top}) Observations with
+    approximately 120K counts.  (\emph{bottom}) Observations with
+    approximately 15K counts.  Note that these are for observations in
+    an aperture corresponding to $R_{2500}$.\ColorRef}
+  \label{fig:f10}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=0.9\textwidth, trim=0mm 10mm 0mm 10mm, clip=true]{f11.eps}
+  \caption{(\emph{Top}) Shift in the \tbroad-\thbr\ plane as
+    wavdetect's ellsigma parameter ranges from 0 to
+    3.  Clusters from the B04 sample are depicted with solid arrows,
+    while clusters from the D09 sample are depicted with long-dashed
+    arrows.  broadband spectral-fit temperatures are estimated within
+    an aperture set at $R_{2500}$.  Notice that the distribution of
+    most of the points shifts significantly to higher spectral fit
+    temperatures and smaller temperature ratios as cool lumps are
+    excised.  Notice also that some simulated clusters are unafflicted
+    by cool lumps, so that their net shift is 0.  (\emph{Bottom}) The
+    \thbr\ component (y-axis) of the shift presented in the top panel.
+    Note that these are for simulated \xmas2 observations of maximum
+    quality, having approximately 120K counts.  \ColorRef}
+  \label{fig:f11}
+\end{figure}
+
+% \begin{figure}[p]
+%   \centering
+%   \includegraphics[width=0.9\textwidth, trim=0mm 10mm 0mm 10mm, clip=true]{f12.eps}
+%   \caption{(\emph{Top}) Shift in the \tbroad-\thbr\ plane as
+%     wavdetect's ellsigma parameter ranges from 0 to 3.
+%     Clusters from the B04 sample are depicted with solid arrows, while
+%     clusters from the D09 sample are depicted with long-dashed arrows.
+%     broadband spectral-fit temperatures are estimated within an
+%     aperture set at $R_{500}$.  (\emph{Bottom}) The \thbr\ component
+%     (y-axis) of the shift presented in the top panel. \ColorRef}
+%   \label{fig:f12}
+% \end{figure}
+
+
+\end{document}
+
+
+% LocalWords:  ap XT Spearman's Pred VIR keV eq BT Ameglio al t eps Jeltema hbp
+% LocalWords:  VALDARNINI Valdarnini EW SL Ventimiglia Voit Borgani ICM AGN Mpc
+% LocalWords:  PhysRevD pre thermalizes ij pred Dipartimento di Astronomia NNG
+% LocalWords:  dell'Universit Tiepolo arXiv ameglio SZ Buote Tsai Mohr Evrard
+% LocalWords:  Mathiesen Cavagnolo SPH CDM \xspec MEKAL wavdetect ellsigma Dolag
+% LocalWords:  THBR SAOAR springel saro ohara navarro fruscione rasia WABS BAOs
+% LocalWords:  wavdetect's h XSPEC borgani henry perlmutter riess eisenstein
+% LocalWords:  frieman ROSAT Sunyaev Zel'dovich ventimiglia buote mohr norman
+% LocalWords:  quantifyingmorphologies oshea kravtsov gardini ln lima
+%  LocalWords:  mathiesen cavagnolo thbr nagai rccc
