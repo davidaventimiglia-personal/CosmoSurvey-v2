@@ -36,12 +36,12 @@ contains
     dx = (x2 - x1)/real(N)
     dy = (y2 - y1)/real(N)
     do j = 1, N
-       write(file, *), x1 + real(i)*dx, y1 + real(j-1)*dy, floor
-       write(file, *), x1 + real(i)*dx, y1 + real(j-1)*dy, iso(j)
-       write(file, *), x1 + real(i)*dx, y1 + real(j)*dy, iso(j)
-       write(file, *), x1 + real(i)*dx, y1 + real(j)*dy, floor
+       write(file, *) x1 + real(i)*dx, y1 + real(j-1)*dy, floor
+       write(file, *) x1 + real(i)*dx, y1 + real(j-1)*dy, iso(j)
+       write(file, *) x1 + real(i)*dx, y1 + real(j)*dy, iso(j)
+       write(file, *) x1 + real(i)*dx, y1 + real(j)*dy, floor
     end do
-    write(file, *), ''
+    write(file, *) ''
   end subroutine isoline
 
   ! Regrid data into "bins" represented by truncated pyramids of
@@ -154,12 +154,12 @@ contains
   subroutine json_matrix (m, unit)
     real, dimension(:) :: m
     integer :: i, j, unit
-    write(unit, '(a)', advance='no'), '['
+    write(unit, '(a)', advance='no') '['
     do i = 1, size(m, 1) - 1
-       write(unit, '(e10.3)', advance='no'), m(i)
-       write(unit, '(a)', advance='no'), ','
+       write(unit, '(e10.3)', advance='no') m(i)
+       write(unit, '(a)', advance='no') ','
     end do
-    write(unit, '(e10.3)', advance='no'), m(size(m, 1))
-    write(unit, '(a)'), ']'
+    write(unit, '(e10.3)', advance='no') m(size(m, 1))
+    write(unit, '(a)') ']'
   end subroutine json_matrix
 end module utils
