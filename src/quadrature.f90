@@ -3,60 +3,130 @@
 ! *****************************************************************************
 module quadrature
   use quadpack
+  use iso_c_binding
   implicit none
   double precision, parameter :: eps_G = 1d-3 !desired integration accuracy
   integer, parameter :: maxpts = 1000000 !maximum allowed invocations of integrand
+
+  ! Cuba 4.x C interface
+  interface
+     subroutine Cuhre(ndim, ncomp, integrand, userdata, nvec, &
+          epsrel, epsabs, flags, mineval, maxeval, key, &
+          statefile, spin, nregions, neval, fail, &
+          integral, error, prob) bind(C, name="Cuhre")
+       import :: c_int, c_double, c_ptr, c_funptr, c_char
+       integer(c_int), value :: ndim, ncomp, nvec, flags, mineval, maxeval, key
+       real(c_double), value :: epsrel, epsabs
+       type(c_funptr), value :: integrand
+       type(c_ptr), value :: userdata, spin
+       character(c_char), intent(in) :: statefile(*)
+       integer(c_int), intent(out) :: nregions, neval, fail
+       real(c_double), intent(out) :: integral(*), error(*), prob(*)
+     end subroutine Cuhre
+
+     subroutine Divonne(ndim, ncomp, integrand, userdata, nvec, &
+          epsrel, epsabs, flags, seed, mineval, maxeval, &
+          key1, key2, key3, maxpass, border, maxchisq, mindeviation, &
+          ngiven, ldxgiven, xgiven, nextra, peakfinder, &
+          statefile, spin, nregions, neval, fail, &
+          integral, error, prob) bind(C, name="Divonne")
+       import :: c_int, c_double, c_ptr, c_funptr, c_char
+       integer(c_int), value :: ndim, ncomp, nvec, flags, seed
+       integer(c_int), value :: mineval, maxeval
+       integer(c_int), value :: key1, key2, key3, maxpass
+       real(c_double), value :: epsrel, epsabs
+       real(c_double), value :: border, maxchisq, mindeviation
+       integer(c_int), value :: ngiven, ldxgiven, nextra
+       type(c_funptr), value :: integrand, peakfinder
+       type(c_ptr), value :: userdata, spin
+       real(c_double), intent(in) :: xgiven(*)
+       character(c_char), intent(in) :: statefile(*)
+       integer(c_int), intent(out) :: nregions, neval, fail
+       real(c_double), intent(out) :: integral(*), error(*), prob(*)
+     end subroutine Divonne
+  end interface
+
+  ! Abstract interface for user integrands (old style)
+  abstract interface
+     subroutine user_integrand(ndim, x, ncomp, f)
+       integer, intent(in) :: ndim, ncomp
+       double precision :: x(ndim), f(ncomp)
+     end subroutine user_integrand
+  end interface
+
+  ! Module variable to store integrand procedure pointer
+  procedure(user_integrand), pointer, save :: current_integrand => null()
+
 contains
 ! *****************************************************************************
 ! * MULTI-DIMENSIONAL INTEGRATORS
 ! *****************************************************************************
+
+  ! C-compatible wrapper for the integrand
+  function cuba_integrand_wrapper(ndim, x, ncomp, f, userdata) result(ret) bind(C)
+    integer(c_int), intent(in) :: ndim, ncomp
+    real(c_double), intent(in) :: x(ndim)
+    real(c_double), intent(out) :: f(ncomp)
+    type(c_ptr), value :: userdata
+    integer(c_int) :: ret
+
+    call current_integrand(int(ndim), x, int(ncomp), f)
+    ret = 0  ! 0 = success
+  end function cuba_integrand_wrapper
+
   ! Calls CUBA's fastest non-deterministic (Monte Carlo) integrator
   subroutine cuba_divonne(Integrand, ndim, val, err, n)
-    interface
-       subroutine Integrand(ndim, x, ncomp, f)
-         integer :: ndim, ncomp
-         double precision x(ndim), f(ncomp)
-       end subroutine Integrand
-    end interface
+    procedure(user_integrand) :: Integrand
     integer, intent(in) :: ndim
     real, intent(out) :: val, err
     integer, intent(out) :: n
-    integer :: nregions, neval, fail
-    double precision :: integral(ndim), error(ndim), prob(ndim)
-    call divonne(ndim, 1, Integrand,&
-         &    eps_G, 1d-12, 0, 0, maxpts,&
-         &    47, 1, 1, 5,&
-         &    0d0, 10d0, 0.25d0,&
-         &    0, ndim, 0, 0, 0,&
-         &    nregions, neval, fail, integral, error, prob)
-    val = integral(1)
-    err = error(1)
-    n = neval
+    integer(c_int) :: nregions, neval, fail
+    real(c_double) :: integral(1), error(1), prob(1)
+    real(c_double) :: xgiven(1)
+    character(c_char) :: statefile(1)
+
+    current_integrand => Integrand
+    statefile(1) = c_null_char
+
+    call Divonne(int(ndim, c_int), 1_c_int, &
+         c_funloc(cuba_integrand_wrapper), c_null_ptr, 1_c_int, &
+         real(eps_G, c_double), 1d-12, 0_c_int, 0_c_int, &
+         0_c_int, int(maxpts, c_int), &
+         47_c_int, 1_c_int, 1_c_int, 5_c_int, &
+         0d0, 10d0, 0.25d0, &
+         0_c_int, int(ndim, c_int), xgiven, 0_c_int, c_null_funptr, &
+         statefile, c_null_ptr, nregions, neval, fail, &
+         integral, error, prob)
+
+    val = real(integral(1))
+    err = real(error(1))
+    n = int(neval)
   end subroutine cuba_divonne
 
   ! Calls CUBA's deterministic integrator
   subroutine cuba_cuhre(Integrand, ndim, val, tol, err, n)
-    interface
-       subroutine Integrand(ndim, x, ncomp, f)
-         integer, intent(in) :: ndim, ncomp
-         double precision x(ndim), f(ncomp)
-       end subroutine Integrand
-    end interface
+    procedure(user_integrand) :: Integrand
     integer, intent(in) :: ndim
     real, intent(out) :: val, err
     real, intent(in) :: tol
     integer, intent(out) :: n
-    double precision :: eps
-    integer :: nregions, neval, fail
-    double precision :: integral(ndim), error(ndim), prob(ndim)
-    eps = tol
-    call cuhre(ndim, 1, Integrand,&
-         &    eps, 1d-12, 0, 0, maxpts,&
-         &    0, &
-         &    nregions, neval, fail, integral, error, prob)
-    val = integral(1)
-    err = error(1)
-    n = neval
+    integer(c_int) :: nregions, neval, fail
+    real(c_double) :: integral(1), error(1), prob(1)
+    character(c_char) :: statefile(1)
+
+    current_integrand => Integrand
+    statefile(1) = c_null_char
+
+    call Cuhre(int(ndim, c_int), 1_c_int, &
+         c_funloc(cuba_integrand_wrapper), c_null_ptr, 1_c_int, &
+         real(tol, c_double), 1d-12, 0_c_int, &
+         0_c_int, int(maxpts, c_int), 0_c_int, &
+         statefile, c_null_ptr, nregions, neval, fail, &
+         integral, error, prob)
+
+    val = real(integral(1))
+    err = real(error(1))
+    n = int(neval)
   end subroutine cuba_cuhre
 
 ! *****************************************************************************
