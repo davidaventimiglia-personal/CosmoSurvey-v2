@@ -37,6 +37,19 @@
 *.info
 /compile
 /configure
+/configure~
 /depcomp
 /install-sh
 /missing
+
+# Generated Makefiles
+/Makefile
+/src/Makefile
+/doc/Makefile
+/doc/examples/Makefile
+config.status
+
+# Built executables
+/src/cosmosurvey
+/src/cosmoplot
+/src/cosmotest
