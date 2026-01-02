@@ -22,9 +22,9 @@ make distclean  # also removes configure-generated files
 
 ## Dependencies
 
-- **Cuba library** (1.5+): Numerical integration (Vegas algorithm) - http://www.feynarts.de/cuba/
-- **PLplot** with Fortran bindings: Plotting library (pkg-config module: `plplotfortran0`)
-- **Fortran compiler**: gfortran or similar
+- **Cuba library** (4.x): Numerical integration (Cuhre, Divonne algorithms) - http://www.feynarts.de/cuba/
+- **PLplot** (5.x) with Fortran bindings: Plotting library (pkg-config module: `plplot-fortran`)
+- **Fortran compiler**: gfortran or similar (requires Fortran 2003 for iso_c_binding)
 - **C compiler**: for Cuba library integration
 
 ## Architecture
@@ -36,7 +36,10 @@ CosmoSurvey is a Fortran 90 cosmological survey modeler that calculates expected
 Core modules built into a static library:
 
 - **constants.f90**: Physical constants (H100, c, rho_crit, M_scale, L_scale, etc.)
-- **quadrature.f90**: Wrapper around QUADPACK routines for adaptive integration (`f_qag`, `f_qagi`)
+- **quadrature.f90**: Wrapper around QUADPACK (1D) and Cuba (multi-D) integration routines
+  - Uses `iso_c_binding` for Cuba 4.x C interoperability
+  - `cuba_cuhre`, `cuba_divonne`: Multi-dimensional integrators
+  - `f_qag`, `f_qagi`, `f_qags`, `f_qng`: 1D QUADPACK wrappers
 - **cosmology.f90**: Cosmological calculations
   - `CosmoParams` type: stores model parameters (w, Omega_M_0, sigma_8, etc.)
   - `theta_G`: global parameter storage (thread-private for OpenMP)
@@ -73,3 +76,20 @@ cosmosurvey -z1 0.01 -z2 2.5 -nz 10 -l1 44.0 -l2 46.0 -nl 10 \
 ```
 
 Key parameters: redshift range (z1, z2, nz bins), luminosity range (l1, l2, nl bins), solid angle (do), flux limit (fl), cosmological parameters (w, om, s8, g).
+
+## API Compatibility Notes
+
+### Cuba Library (4.x)
+
+The Cuba interface in `quadrature.f90` uses Fortran 2003 `iso_c_binding` for C interoperability:
+- `Cuhre` and `Divonne` are declared with `bind(C)` interfaces
+- Integrand functions use a C-compatible wrapper (`cuba_integrand_wrapper`)
+- Uses `c_funloc`, `c_null_ptr`, `c_null_char` for proper C interop
+
+### PLplot (5.x)
+
+In modern PLplot, `plparseopts` is a function returning an integer status code:
+```fortran
+integer :: plparseopts_rc
+plparseopts_rc = plparseopts(PL_PARSE_FULL)
+```
